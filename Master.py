@@ -610,6 +610,165 @@ template_sign_up = '''<?xml version="1.0" encoding="UTF-8"?>
  <connections/>
 </ui>
 '''
+template_main = '''<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>701</width>
+    <height>414</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>MainWindow</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <layout class="QHBoxLayout" name="horizontalLayout_2">
+    <item>
+     <spacer name="horizontalSpacer">
+      <property name="orientation">
+       <enum>Qt::Horizontal</enum>
+      </property>
+      <property name="sizeHint" stdset="0">
+       <size>
+        <width>206</width>
+        <height>17</height>
+       </size>
+      </property>
+     </spacer>
+    </item>
+    <item>
+     <layout class="QVBoxLayout" name="verticalLayout_2">
+      <item>
+       <spacer name="verticalSpacer">
+        <property name="orientation">
+         <enum>Qt::Vertical</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>20</width>
+          <height>40</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+      <item>
+       <layout class="QVBoxLayout" name="verticalLayout">
+        <item>
+         <widget class="QPushButton" name="calendar">
+          <property name="minimumSize">
+           <size>
+            <width>250</width>
+            <height>0</height>
+           </size>
+          </property>
+          <property name="text">
+           <string>Calendar</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="olimpiad">
+          <property name="text">
+           <string>Olimpiads</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="data">
+          <property name="text">
+           <string>Data</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <layout class="QHBoxLayout" name="horizontalLayout">
+          <item>
+           <spacer name="horizontalSpacer_4">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>40</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+          <item>
+           <widget class="QPushButton" name="log_out">
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>0</height>
+             </size>
+            </property>
+            <property name="text">
+             <string>Log out</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="dark_theme">
+            <property name="text">
+             <string>Dark theme</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <spacer name="verticalSpacer_2">
+        <property name="orientation">
+         <enum>Qt::Vertical</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>20</width>
+          <height>40</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+     </layout>
+    </item>
+    <item>
+     <spacer name="horizontalSpacer_2">
+      <property name="orientation">
+       <enum>Qt::Horizontal</enum>
+      </property>
+      <property name="sizeHint" stdset="0">
+       <size>
+        <width>205</width>
+        <height>17</height>
+       </size>
+      </property>
+     </spacer>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>701</width>
+     <height>22</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QStatusBar" name="statusbar"/>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
+'''
 
 
 class Sing_IN_Wind(QMainWindow):
@@ -619,6 +778,14 @@ class Sing_IN_Wind(QMainWindow):
         uic.loadUi(f, self)
         self.showMaximized()
         self.sign_up.clicked.connect(self.GoToSign_Up)
+        self.sign_in.clicked.connect(self.GoToMain)
+
+    def GoToMain(self):
+        global ex
+        ex2 = Main_Wind(self.email.text())
+        ex2.show()
+        self.close()
+        ex = ex2
 
     def GoToSign_Up(self):
         global ex
@@ -635,6 +802,32 @@ class Sign_Up_Wind(QMainWindow):
         uic.loadUi(f, self)
         self.showMaximized()
         self.Sign_in.clicked.connect(self.GoToSign_In)
+        self.Create.clicked.connect(self.create_btn)
+
+    def create_btn(self):  # создаём акк
+        global ex
+        ex2 = Main_Wind(self.Email.text())
+        ex2.show()
+        ex.close()
+        ex = ex2
+
+
+    def GoToSign_In(self):
+        global ex
+        ex4 = Sing_IN_Wind()
+        ex4.show()
+        ex.close()
+        ex = ex4
+
+
+class Main_Wind(QMainWindow):
+    def __init__(self, email):
+        super().__init__()
+        self.email = email
+        f = io.StringIO(template_main)
+        uic.loadUi(f, self)
+        self.showMaximized()
+        self.log_out.clicked.connect(self.GoToSign_In)
 
     def GoToSign_In(self):
         global ex
