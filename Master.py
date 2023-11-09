@@ -4,6 +4,165 @@ import sqlite3
 from PyQt5 import uic
 from PyQt5.QtWidgets import QMainWindow, QApplication
 
+template_main = '''<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>701</width>
+    <height>414</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>MainWindow</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <layout class="QHBoxLayout" name="horizontalLayout_2">
+    <item>
+     <spacer name="horizontalSpacer">
+      <property name="orientation">
+       <enum>Qt::Horizontal</enum>
+      </property>
+      <property name="sizeHint" stdset="0">
+       <size>
+        <width>206</width>
+        <height>17</height>
+       </size>
+      </property>
+     </spacer>
+    </item>
+    <item>
+     <layout class="QVBoxLayout" name="verticalLayout_2">
+      <item>
+       <spacer name="verticalSpacer">
+        <property name="orientation">
+         <enum>Qt::Vertical</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>20</width>
+          <height>40</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+      <item>
+       <layout class="QVBoxLayout" name="verticalLayout">
+        <item>
+         <widget class="QPushButton" name="calendar">
+          <property name="minimumSize">
+           <size>
+            <width>250</width>
+            <height>0</height>
+           </size>
+          </property>
+          <property name="text">
+           <string>Calendar</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="olimpiad">
+          <property name="text">
+           <string>Olimpiads</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="data">
+          <property name="text">
+           <string>Data</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <layout class="QHBoxLayout" name="horizontalLayout">
+          <item>
+           <spacer name="horizontalSpacer_4">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>40</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+          <item>
+           <widget class="QPushButton" name="log_out">
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>0</height>
+             </size>
+            </property>
+            <property name="text">
+             <string>Log out</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="dark_theme">
+            <property name="text">
+             <string>Dark theme</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <spacer name="verticalSpacer_2">
+        <property name="orientation">
+         <enum>Qt::Vertical</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>20</width>
+          <height>40</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+     </layout>
+    </item>
+    <item>
+     <spacer name="horizontalSpacer_2">
+      <property name="orientation">
+       <enum>Qt::Horizontal</enum>
+      </property>
+      <property name="sizeHint" stdset="0">
+       <size>
+        <width>205</width>
+        <height>17</height>
+       </size>
+      </property>
+     </spacer>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>701</width>
+     <height>22</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QStatusBar" name="statusbar"/>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
+'''
 template_sign_in = '''<?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
  <class>MainWindow</class>
@@ -611,7 +770,7 @@ template_sign_up = '''<?xml version="1.0" encoding="UTF-8"?>
  <connections/>
 </ui>
 '''
-template_main = '''<?xml version="1.0" encoding="UTF-8"?>
+template_olimpiads = '''<?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
  <class>MainWindow</class>
  <widget class="QMainWindow" name="MainWindow">
@@ -619,138 +778,284 @@ template_main = '''<?xml version="1.0" encoding="UTF-8"?>
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>701</width>
-    <height>414</height>
+    <width>624</width>
+    <height>459</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>MainWindow</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <layout class="QHBoxLayout" name="horizontalLayout_2">
+   <layout class="QVBoxLayout" name="verticalLayout_4">
     <item>
-     <spacer name="horizontalSpacer">
-      <property name="orientation">
-       <enum>Qt::Horizontal</enum>
-      </property>
-      <property name="sizeHint" stdset="0">
-       <size>
-        <width>206</width>
-        <height>17</height>
-       </size>
-      </property>
-     </spacer>
-    </item>
-    <item>
-     <layout class="QVBoxLayout" name="verticalLayout_2">
+     <layout class="QHBoxLayout" name="horizontalLayout">
       <item>
-       <spacer name="verticalSpacer">
-        <property name="orientation">
-         <enum>Qt::Vertical</enum>
-        </property>
-        <property name="sizeHint" stdset="0">
+       <widget class="QLabel" name="lvl">
+        <property name="maximumSize">
          <size>
-          <width>20</width>
+          <width>16777215</width>
           <height>40</height>
          </size>
         </property>
-       </spacer>
-      </item>
-      <item>
-       <layout class="QVBoxLayout" name="verticalLayout">
-        <item>
-         <widget class="QPushButton" name="calendar">
-          <property name="minimumSize">
-           <size>
-            <width>250</width>
-            <height>0</height>
-           </size>
-          </property>
-          <property name="text">
-           <string>Calendar</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QPushButton" name="olimpiad">
-          <property name="text">
-           <string>Olimpiads</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QPushButton" name="data">
-          <property name="text">
-           <string>Data</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <layout class="QHBoxLayout" name="horizontalLayout">
-          <item>
-           <spacer name="horizontalSpacer_4">
-            <property name="orientation">
-             <enum>Qt::Horizontal</enum>
-            </property>
-            <property name="sizeHint" stdset="0">
-             <size>
-              <width>40</width>
-              <height>20</height>
-             </size>
-            </property>
-           </spacer>
-          </item>
-          <item>
-           <widget class="QPushButton" name="log_out">
-            <property name="minimumSize">
-             <size>
-              <width>0</width>
-              <height>0</height>
-             </size>
-            </property>
-            <property name="text">
-             <string>Log out</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QPushButton" name="dark_theme">
-            <property name="text">
-             <string>Dark theme</string>
-            </property>
-           </widget>
-          </item>
-         </layout>
-        </item>
-       </layout>
-      </item>
-      <item>
-       <spacer name="verticalSpacer_2">
-        <property name="orientation">
-         <enum>Qt::Vertical</enum>
+        <property name="font">
+         <font>
+          <family>Ubuntu Mono</family>
+          <pointsize>16</pointsize>
+          <weight>50</weight>
+          <bold>false</bold>
+         </font>
         </property>
-        <property name="sizeHint" stdset="0">
+        <property name="text">
+         <string>I lvl</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignCenter</set>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLabel" name="lvl_2">
+        <property name="maximumSize">
          <size>
-          <width>20</width>
+          <width>16777215</width>
           <height>40</height>
          </size>
         </property>
-       </spacer>
+        <property name="font">
+         <font>
+          <family>Ubuntu Mono</family>
+          <pointsize>16</pointsize>
+          <weight>50</weight>
+          <bold>false</bold>
+         </font>
+        </property>
+        <property name="text">
+         <string>2 lvl</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignCenter</set>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLabel" name="lvl_3">
+        <property name="maximumSize">
+         <size>
+          <width>16777215</width>
+          <height>40</height>
+         </size>
+        </property>
+        <property name="font">
+         <font>
+          <family>Ubuntu Mono</family>
+          <pointsize>16</pointsize>
+          <weight>50</weight>
+          <bold>false</bold>
+         </font>
+        </property>
+        <property name="text">
+         <string>3 lvl</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignCenter</set>
+        </property>
+       </widget>
       </item>
      </layout>
     </item>
     <item>
-     <spacer name="horizontalSpacer_2">
-      <property name="orientation">
-       <enum>Qt::Horizontal</enum>
-      </property>
-      <property name="sizeHint" stdset="0">
-       <size>
-        <width>205</width>
-        <height>17</height>
-       </size>
-      </property>
-     </spacer>
+     <layout class="QHBoxLayout" name="horizontalLayout_2">
+      <item>
+       <layout class="QVBoxLayout" name="verticalLayout">
+        <item>
+         <widget class="QPushButton" name="vishaya">
+          <property name="text">
+           <string>Высшая проба</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="mosh">
+          <property name="text">
+           <string>МОШ</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="kurch">
+          <property name="text">
+           <string>Курчатов</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="lomonosov">
+          <property name="text">
+           <string>Олимпиада «Ломоносов»</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="gori">
+          <property name="text">
+           <string>Покори Воробьевы горы!</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="fizteh">
+          <property name="text">
+           <string>Физтех</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="spgu">
+          <property name="text">
+           <string>Олимпиада СПБГУ</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="goroda">
+          <property name="text">
+           <string>Турнир городов</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <layout class="QVBoxLayout" name="verticalLayout_2">
+        <item>
+         <widget class="QPushButton" name="vsesib">
+          <property name="text">
+           <string>Всесибирская олимпиада</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="formula">
+          <property name="text">
+           <string>Формула Единства</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="verchenko">
+          <property name="text">
+           <string>Олимпиада И.Я. Верченко</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="mezvuz">
+          <property name="text">
+           <string>Межвузовская олимпиада</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="umsh">
+          <property name="text">
+           <string>Олимпиада ЮМШ</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="open">
+          <property name="text">
+           <string>Открытая олимпиада</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="rosatom">
+          <property name="text">
+           <string>Росатом</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="turlom">
+          <property name="text">
+           <string>Турнир Ломоносова</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <layout class="QVBoxLayout" name="verticalLayout_3">
+        <item>
+         <widget class="QPushButton" name="finansist">
+          <property name="text">
+           <string>Финансист</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="innopolis">
+          <property name="text">
+           <string>Innopolis Open</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="izumrud">
+          <property name="text">
+           <string>Изумруд</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="sammat">
+          <property name="text">
+           <string>САММАТ</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="bibn">
+          <property name="text">
+           <string>БИБН</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="shvb">
+          <property name="text">
+           <string>Шаг в будущее</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+     </layout>
+    </item>
+    <item>
+     <layout class="QHBoxLayout" name="horizontalLayout_3">
+      <item>
+       <spacer name="horizontalSpacer">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>40</width>
+          <height>20</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+      <item>
+       <widget class="QPushButton" name="back">
+        <property name="text">
+         <string>Back</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
     </item>
    </layout>
   </widget>
@@ -759,7 +1064,7 @@ template_main = '''<?xml version="1.0" encoding="UTF-8"?>
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>701</width>
+     <width>624</width>
      <height>22</height>
     </rect>
    </property>
@@ -869,7 +1174,15 @@ class Main_Wind(QMainWindow):
         f = io.StringIO(template_main)
         uic.loadUi(f, self)
         self.showMaximized()
+        self.olimpiad.clicked.connect(self.GoToOlimpiads)
         self.log_out.clicked.connect(self.GoToSign_In)
+
+    def GoToOlimpiads(self):
+        global ex
+        ex4 = Olimpiads_Wind(self.email)
+        ex4.show()
+        ex.close()
+        ex = ex4
 
     def GoToSign_In(self):
         global ex
@@ -877,6 +1190,30 @@ class Main_Wind(QMainWindow):
         ex4.show()
         ex.close()
         ex = ex4
+
+
+class Olimpiads_Wind(QMainWindow):
+    def __init__(self, email):
+        super().__init__()
+        self.email = email
+        self.showMaximized()
+        f = io.StringIO(template_olimpiads)
+        uic.loadUi(f, self)
+        self.back.clicked.connect(self.GoToMain)
+
+    def GoToMain(self):
+        global ex
+        ex2 = Main_Wind(self.email)
+        ex2.show()
+        ex.close()
+        ex = ex2
+
+    def GoToSign_In(self):
+        global ex
+        ex1 = Sing_IN_Wind()
+        ex1.show()
+        ex.close()
+        ex = ex1
 
 
 if __name__ == '__main__':
