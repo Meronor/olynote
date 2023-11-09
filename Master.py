@@ -163,6 +163,163 @@ template_main = '''<?xml version="1.0" encoding="UTF-8"?>
  <connections/>
 </ui>
 '''
+template_page = '''<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>800</width>
+    <height>600</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>MainWindow</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <layout class="QVBoxLayout" name="verticalLayout_4">
+    <item>
+     <widget class="QLabel" name="name">
+      <property name="font">
+       <font>
+        <family>Ubuntu Condensed</family>
+        <pointsize>22</pointsize>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="text">
+       <string>TextLabel</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <layout class="QHBoxLayout" name="horizontalLayout_8">
+      <item>
+       <widget class="QLabel" name="label_7">
+        <property name="minimumSize">
+         <size>
+          <width>20</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout">
+        <item>
+         <layout class="QVBoxLayout" name="verticalLayout">
+          <item>
+           <layout class="QHBoxLayout" name="horizontalLayout_2">
+            <item>
+             <widget class="QLabel" name="label">
+              <property name="text">
+               <string>Ссылка:</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+          <item>
+           <layout class="QHBoxLayout" name="horizontalLayout_7">
+            <item>
+             <widget class="QLabel" name="label_3">
+              <property name="text">
+               <string>Some info:  skufsdufgsldufsdf</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+         </layout>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <widget class="QTextBrowser" name="about">
+        <property name="readOnly">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </item>
+    <item>
+     <layout class="QHBoxLayout" name="horizontalLayout_3">
+      <item>
+       <widget class="QLabel" name="label_2">
+        <property name="minimumSize">
+         <size>
+          <width>20</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="back">
+        <property name="text">
+         <string>Back</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <spacer name="horizontalSpacer">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>358</width>
+          <height>20</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+      <item>
+       <widget class="QPushButton" name="btn">
+        <property name="minimumSize">
+         <size>
+          <width>200</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="text">
+         <string>Edit</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>800</width>
+     <height>22</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QStatusBar" name="statusbar"/>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
+'''
 template_sign_in = '''<?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
  <class>MainWindow</class>
@@ -1200,6 +1357,34 @@ class Olimpiads_Wind(QMainWindow):
         f = io.StringIO(template_olimpiads)
         uic.loadUi(f, self)
         self.back.clicked.connect(self.GoToMain)
+        self.vishaya.clicked.connect(self.OlimpPage)
+        self.mosh.clicked.connect(self.OlimpPage)
+        self.kurch.clicked.connect(self.OlimpPage)
+        self.lomonosov.clicked.connect(self.OlimpPage)
+        self.gori.clicked.connect(self.OlimpPage)
+        self.fizteh.clicked.connect(self.OlimpPage)
+        self.spgu.clicked.connect(self.OlimpPage)
+        self.goroda.clicked.connect(self.OlimpPage)
+        self.vsesib.clicked.connect(self.OlimpPage)
+        self.formula.clicked.connect(self.OlimpPage)
+        self.verchenko.clicked.connect(self.OlimpPage)
+        self.mezvuz.clicked.connect(self.OlimpPage)
+        self.open.clicked.connect(self.OlimpPage)
+        self.rosatom.clicked.connect(self.OlimpPage)
+        self.turlom.clicked.connect(self.OlimpPage)
+        self.finansist.clicked.connect(self.OlimpPage)
+        self.innopolis.clicked.connect(self.OlimpPage)
+        self.izumrud.clicked.connect(self.OlimpPage)
+        self.sammat.clicked.connect(self.OlimpPage)
+        self.bibn.clicked.connect(self.OlimpPage)
+        self.shvb.clicked.connect(self.OlimpPage)
+
+    def OlimpPage(self):
+        global ex
+        ex2 = Page_Wind(self.sender().text(), self.email)
+        ex2.show()
+        ex.close()
+        ex = ex2
 
     def GoToMain(self):
         global ex
@@ -1214,6 +1399,19 @@ class Olimpiads_Wind(QMainWindow):
         ex1.show()
         ex.close()
         ex = ex1
+
+
+class Page_Wind(QMainWindow):
+    def __init__(self, btn_text, email):
+        super().__init__()
+        self.email = email
+        self.showMaximized()
+        f = io.StringIO(template_page)
+        uic.loadUi(f, self)
+        self.olimp = btn_text
+        self.label.setOpenExternalLinks(True)
+        self.name.setText(btn_text)
+        self.label_3.setText('Some info: inf0')
 
 
 if __name__ == '__main__':
