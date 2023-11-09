@@ -1,5 +1,6 @@
 import io
 import sys
+import sqlite3
 from PyQt5 import uic
 from PyQt5.QtWidgets import QMainWindow, QApplication
 
@@ -771,21 +772,48 @@ template_main = '''<?xml version="1.0" encoding="UTF-8"?>
 '''
 
 
+def add_user(email, password):
+    with sqlite3.connect("datausers") as con:
+        cur = con.cursor()
+        try:
+            if len(password) <= 7:
+                return 'Your password has less than 7 symbols'
+            if password.isdigit():
+                return 'Use at least 1 letter in password'
+            if password.isalpha():
+                return 'Use at least 1 digit in password'
+            if len(email) < 5 or '@' not in email or '.' not in email:
+                return 'Wrong email'
+
+            inornot = cur.execute(f"SELECT * FROM users WHERE email='{email}'").fetchall()
+            if len(inornot) == 0:
+                cur.execute(f"INSERT INTO users (email, password) VALUES ('{email}', '{password}')")
+                cur.execute(f"INSERT INTO notes1 (id) VALUES ('{email}')")
+                return True
+        except Exception as e:
+            print(e)
+            print('add_user')
+        return 'email is yet'
+
+
 class Sing_IN_Wind(QMainWindow):
     def __init__(self):
         super().__init__()
         f = io.StringIO(template_sign_in)
         uic.loadUi(f, self)
         self.showMaximized()
-        self.sign_up.clicked.connect(self.GoToSign_Up)
         self.sign_in.clicked.connect(self.GoToMain)
+        self.sign_up.clicked.connect(self.GoToSign_Up)
 
     def GoToMain(self):
-        global ex
-        ex2 = Main_Wind(self.email.text())
-        ex2.show()
-        self.close()
-        ex = ex2
+        if self.check() == self.password.text():
+            global ex
+            ex2 = Main_Wind(self.email.text())
+            ex2.show()
+            self.close()
+            ex = ex2
+        else:
+            self.explain.setText('Wrong email or password')
 
     def GoToSign_Up(self):
         global ex
@@ -793,6 +821,14 @@ class Sing_IN_Wind(QMainWindow):
         ex2.show()
         self.close()
         ex = ex2
+
+    def check(self):
+        try:
+            with sqlite3.connect("datausers") as con:
+                cur = con.cursor()
+                return cur.execute(f"SELECT password FROM users WHERE email='{self.email.text()}'").fetchall()[0][0]
+        except Exception:
+            return False
 
 
 class Sign_Up_Wind(QMainWindow):
@@ -805,12 +841,18 @@ class Sign_Up_Wind(QMainWindow):
         self.Create.clicked.connect(self.create_btn)
 
     def create_btn(self):  # создаём акк
-        global ex
-        ex2 = Main_Wind(self.Email.text())
-        ex2.show()
-        ex.close()
-        ex = ex2
-
+        if self.Password.text() == self.Password2.text():
+            global ex
+            check = add_user(self.Email.text(), self.Password.text())
+            if check is True:
+                ex2 = Main_Wind(self.Email.text())
+                ex2.show()
+                ex.close()
+                ex = ex2
+            else:
+                self.error.setText(check)
+        else:
+            self.error.setText('Different passwords')
 
     def GoToSign_In(self):
         global ex
