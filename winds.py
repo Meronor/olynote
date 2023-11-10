@@ -1388,11 +1388,11 @@ ex = ''
 class Main_Wind(QMainWindow):
     def __init__(self, email, color="background-color: white"):
         super().__init__()
+        f = io.StringIO(template_main)
+        uic.loadUi(f, self)
         self.color = color
         self.email = email
-        f = io.StringIO(template_main)
         self.setStyleSheet(self.color)
-        uic.loadUi(f, self)
         self.showMaximized()
         self.olimpiad.clicked.connect(self.GoToOlimpiads)
         self.log_out.clicked.connect(self.GoToSign_In)
@@ -1427,9 +1427,9 @@ class Sing_IN_Wind(QMainWindow):
     def __init__(self, color="background-color: white"):
         super().__init__()
         f = io.StringIO(template_sign_in)
+        uic.loadUi(f, self)
         self.color = color
         self.setStyleSheet(self.color)
-        uic.loadUi(f, self)
         self.showMaximized()
         self.setWindowTitle("Sign in")
         self.password.setEchoMode(QLineEdit.Password)
@@ -1466,9 +1466,9 @@ class Sign_Up_Wind(QMainWindow):
     def __init__(self, color="background-color: white"):
         super().__init__()
         f = io.StringIO(template_sign_up)
+        uic.loadUi(f, self)
         self.color = color
         self.setStyleSheet(self.color)
-        uic.loadUi(f, self)
         self.showMaximized()
         self.setWindowTitle("Sign up")
         self.Sign_in.clicked.connect(self.GoToSign_In)
@@ -1499,13 +1499,13 @@ class Sign_Up_Wind(QMainWindow):
 class Olimpiads_Wind(QMainWindow):
     def __init__(self, email, color="background-color: white"):
         super().__init__()
+        f = io.StringIO(template_olimpiads)
+        uic.loadUi(f, self)
+        self.showMaximized()
+        self.setWindowTitle("List")
         self.color = color
         self.email = email
-        self.showMaximized()
-        f = io.StringIO(template_olimpiads)
         self.setStyleSheet(self.color)
-        uic.loadUi(f, self)
-        self.setWindowTitle("List")
         self.back.clicked.connect(self.GoToMain)
         self.vishaya.clicked.connect(self.OlimpPage)
         self.mosh.clicked.connect(self.OlimpPage)
@@ -1554,13 +1554,13 @@ class Olimpiads_Wind(QMainWindow):
 class Page_Wind(QMainWindow):
     def __init__(self, btn_text, email, color="background-color: white"):
         super().__init__()
+        f = io.StringIO(template_page)
+        uic.loadUi(f, self)
         self.color = color
         self.email = email
         self.showMaximized()
         self.setWindowTitle("Page")
-        f = io.StringIO(template_page)
         self.setStyleSheet(self.color)
-        uic.loadUi(f, self)
         self.olimp = btn_text
         self.label.setText(f'<a href="{get_url(btn_text)}">Ссылка:</a>')
         self.label.setTextInteractionFlags(Qt.TextBrowserInteraction)
