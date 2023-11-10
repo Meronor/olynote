@@ -33,7 +33,8 @@ def get_url(olimp):
             cur = con.cursor()
             return cur.execute(f"SELECT `{olimp}` FROM notes1 WHERE id='0'").fetchall()[0][0]
     except Exception as s:
-        print(get_url)
+        print(s)
+        print('get_url')
         return False
 
 
@@ -42,8 +43,31 @@ def get_note(olimp, email):
         with sqlite3.connect("datausers") as con:
             cur = con.cursor()
             return cur.execute(f"SELECT `{olimp}` FROM notes1 WHERE id='{email}'").fetchall()[0][0]
-    except Exception:
+    except Exception as s:
+        print(s)
         print('get_note')
+        return False
+
+
+def get_theme(email):
+    try:
+        with sqlite3.connect("datausers") as con:
+            cur = con.cursor()
+            return cur.execute(f"SELECT theme FROM notes1 WHERE id='{email}'").fetchall()[0][0]
+    except Exception as s:
+        print(s)
+        print('get_theme')
+        return False
+
+
+def set_theme(theme, email):
+    with sqlite3.connect("datausers") as con:
+        cur = con.cursor()
+        try:
+            cur.execute(f'UPDATE notes1 SET theme = "{theme}" WHERE id = "{email}"')
+        except Exception as s:
+            print(s)
+            print('set_note')
         return False
 
 
@@ -52,7 +76,8 @@ def set_note(olimp, note, email):
         cur = con.cursor()
         try:
             cur.execute(f'UPDATE notes1 SET `{olimp}` = "{note}" WHERE id = "{email}"')
-        except Exception:
+        except Exception as s:
+            print(s)
             print('set_note')
         return False
 
