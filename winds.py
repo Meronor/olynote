@@ -2,7 +2,7 @@ import io
 import sqlite3
 from PyQt5 import uic
 from PyQt5.QtCore import Qt, QUrl
-from PyQt5.QtWidgets import QMainWindow
+from PyQt5.QtWidgets import QMainWindow, QLineEdit
 from PyQt5.QtGui import QDesktopServices
 from base import get_url, get_note, set_note, add_user
 
@@ -1386,43 +1386,60 @@ ex = ''
 
 
 class Main_Wind(QMainWindow):
-    def __init__(self, email):
+    def __init__(self, email, color="background-color: white"):
         super().__init__()
+        self.color = color
         self.email = email
         f = io.StringIO(template_main)
+        self.setStyleSheet(self.color)
         uic.loadUi(f, self)
         self.showMaximized()
         self.olimpiad.clicked.connect(self.GoToOlimpiads)
         self.log_out.clicked.connect(self.GoToSign_In)
+        self.dark_theme.clicked.connect(self.theme)
+
+    def theme(self):
+        if self.sender().text() == 'Dark theme':
+            self.color = "background-color: #2b2b2b"
+            self.setStyleSheet(self.color)
+            self.dark_theme.setText('Light theme')
+        elif self.sender().text() == 'Light theme':
+            self.color = "background-color: white"
+            self.setStyleSheet(self.color)
+            self.dark_theme.setText('Dark theme')
 
     def GoToOlimpiads(self):
         global ex
-        ex4 = Olimpiads_Wind(self.email)
+        ex4 = Olimpiads_Wind(self.email, self.color)
         ex4.show()
         ex.close()
         ex = ex4
 
     def GoToSign_In(self):
         global ex
-        ex4 = Sing_IN_Wind()
+        ex4 = Sing_IN_Wind(self.color)
         ex4.show()
         ex.close()
         ex = ex4
 
 
 class Sing_IN_Wind(QMainWindow):
-    def __init__(self):
+    def __init__(self, color="background-color: white"):
         super().__init__()
         f = io.StringIO(template_sign_in)
+        self.color = color
+        self.setStyleSheet(self.color)
         uic.loadUi(f, self)
         self.showMaximized()
+        self.setWindowTitle("Sign in")
+        self.password.setEchoMode(QLineEdit.Password)
         self.sign_in.clicked.connect(self.GoToMain)
         self.sign_up.clicked.connect(self.GoToSign_Up)
 
     def GoToMain(self):
         if self.check() == self.password.text():
             global ex
-            ex2 = Main_Wind(self.email.text())
+            ex2 = Main_Wind(self.email.text(), self.color)
             ex2.show()
             self.close()
             ex = ex2
@@ -1431,7 +1448,7 @@ class Sing_IN_Wind(QMainWindow):
 
     def GoToSign_Up(self):
         global ex
-        ex2 = Sign_Up_Wind()
+        ex2 = Sign_Up_Wind(self.color)
         ex2.show()
         self.close()
         ex = ex2
@@ -1446,11 +1463,14 @@ class Sing_IN_Wind(QMainWindow):
 
 
 class Sign_Up_Wind(QMainWindow):
-    def __init__(self):
+    def __init__(self, color="background-color: white"):
         super().__init__()
         f = io.StringIO(template_sign_up)
+        self.color = color
+        self.setStyleSheet(self.color)
         uic.loadUi(f, self)
         self.showMaximized()
+        self.setWindowTitle("Sign up")
         self.Sign_in.clicked.connect(self.GoToSign_In)
         self.Create.clicked.connect(self.create_btn)
 
@@ -1459,7 +1479,7 @@ class Sign_Up_Wind(QMainWindow):
             global ex
             check = add_user(self.Email.text(), self.Password.text())
             if check is True:
-                ex2 = Main_Wind(self.Email.text())
+                ex2 = Main_Wind(self.Email.text(), self.color)
                 ex2.show()
                 ex.close()
                 ex = ex2
@@ -1470,19 +1490,22 @@ class Sign_Up_Wind(QMainWindow):
 
     def GoToSign_In(self):
         global ex
-        ex4 = Sing_IN_Wind()
+        ex4 = Sing_IN_Wind(self.color)
         ex4.show()
         ex.close()
         ex = ex4
 
 
 class Olimpiads_Wind(QMainWindow):
-    def __init__(self, email):
+    def __init__(self, email, color="background-color: white"):
         super().__init__()
+        self.color = color
         self.email = email
         self.showMaximized()
         f = io.StringIO(template_olimpiads)
+        self.setStyleSheet(self.color)
         uic.loadUi(f, self)
+        self.setWindowTitle("List")
         self.back.clicked.connect(self.GoToMain)
         self.vishaya.clicked.connect(self.OlimpPage)
         self.mosh.clicked.connect(self.OlimpPage)
@@ -1508,32 +1531,35 @@ class Olimpiads_Wind(QMainWindow):
 
     def OlimpPage(self):
         global ex
-        ex2 = Page_Wind(self.sender().text(), self.email)
+        ex2 = Page_Wind(self.sender().text(), self.email, self.color)
         ex2.show()
         ex.close()
         ex = ex2
 
     def GoToMain(self):
         global ex
-        ex2 = Main_Wind(self.email)
+        ex2 = Main_Wind(self.email, self.color)
         ex2.show()
         ex.close()
         ex = ex2
 
     def GoToSign_In(self):
         global ex
-        ex1 = Sing_IN_Wind()
+        ex1 = Sing_IN_Wind(self.color)
         ex1.show()
         ex.close()
         ex = ex1
 
 
 class Page_Wind(QMainWindow):
-    def __init__(self, btn_text, email):
+    def __init__(self, btn_text, email, color="background-color: white"):
         super().__init__()
+        self.color = color
         self.email = email
         self.showMaximized()
+        self.setWindowTitle("Page")
         f = io.StringIO(template_page)
+        self.setStyleSheet(self.color)
         uic.loadUi(f, self)
         self.olimp = btn_text
         self.label.setText(f'<a href="{get_url(btn_text)}">Ссылка:</a>')
@@ -1557,7 +1583,7 @@ class Page_Wind(QMainWindow):
 
     def olimpiads(self):
         global ex
-        ex2 = Olimpiads_Wind(self.email)
+        ex2 = Olimpiads_Wind(self.email, self.color)
         ex2.show()
         ex.close()
         ex = ex2
