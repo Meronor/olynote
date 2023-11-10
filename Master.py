@@ -1,9 +1,9 @@
 import sys
 from PyQt5.QtWidgets import QApplication
-from winds import Sing_IN_Wind
+from winds import SingInWind
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
-    ex = Sing_IN_Wind()
+    ex = SingInWind()
     ex.show()
     sys.exit(app.exec_())

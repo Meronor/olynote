@@ -1,4 +1,6 @@
 import sqlite3
+from PyQt5.QtCore import QUrl
+from PyQt5.QtGui import QDesktopServices
 
 
 def add_user(email, password):
@@ -53,3 +55,7 @@ def set_note(olimp, note, email):
         except Exception:
             print('set_note')
         return False
+
+
+def handle_link_activation(url):
+    QDesktopServices.openUrl(QUrl(url))
