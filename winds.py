@@ -1429,6 +1429,7 @@ class SingInWind(QMainWindow):
         uic.loadUi(f, self)
         self.color = color
         self.setStyleSheet(self.color)
+        se
         self.showMaximized()
         self.setWindowTitle("Sign in")
         self.password.setEchoMode(QLineEdit.Password)

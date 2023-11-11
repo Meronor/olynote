@@ -3,6 +3,17 @@ from PyQt5.QtCore import QUrl
 from PyQt5.QtGui import QDesktopServices
 
 
+class WhiteTheme:
+
+    def __init__(self, color):
+        self.color = color
+    def backgr(self):
+        return "background-color: white"
+
+    def lineedit(self):
+        return "QLineEdit { background-color: yellow }"
+
+
 def add_user(email, password):
     with sqlite3.connect("datausers") as con:
         cur = con.cursor()
