@@ -1,8 +1,8 @@
 import io
 import sqlite3
-from PyQt5 import uic
-from PyQt5.QtCore import Qt
-from PyQt5.QtWidgets import QMainWindow, QLineEdit
+from PyQt6 import uic
+import qdarktheme
+from PyQt6.QtWidgets import QMainWindow, QLineEdit, QPushButton
 from base import get_url, get_note, get_theme, set_theme, set_note, add_user, handle_link_activation
 
 template_calendar = '''<?xml version="1.0" encoding="UTF-8"?>
@@ -1390,31 +1390,38 @@ class MainWind(QMainWindow):
         f = io.StringIO(template_main)
         uic.loadUi(f, self)
         self.email = email
-        self.setStyleSheet(get_theme(email))
-        self.showMaximized()
+        self.showFullScreen()
         self.olimpiad.clicked.connect(self.go_to_olimpiads)
         self.log_out.clicked.connect(self.go_to_sign_in)
         self.dark_theme.clicked.connect(self.theme)
-        if get_theme(email) == 'background-color: white':
+        if get_theme(email) == 'light':
+            qdarktheme.setup_theme("light")
             self.dark_theme.setText('Dark theme')
         else:
+            qdarktheme.setup_theme()
+            main_win = QMainWindow()
+            push_button = QPushButton("PyQtDarkTheme!!")
+            main_win.setCentralWidget(push_button)
             self.dark_theme.setText('Light theme')
 
     def theme(self):
         if self.sender().text() == 'Dark theme':
-            self.color = "background-color: #2b2b2b"
-            self.setStyleSheet(self.color)
+            self.color = "Dark"
+            qdarktheme.setup_theme()
+            main_win = QMainWindow()
+            push_button = QPushButton("PyQtDarkTheme!!")
+            main_win.setCentralWidget(push_button)
             self.dark_theme.setText('Light theme')
             set_theme(self.color, self.email)
         elif self.sender().text() == 'Light theme':
-            self.color = "background-color: white"
-            self.setStyleSheet(self.color)
+            self.color = "light"
+            qdarktheme.setup_theme("light")
             self.dark_theme.setText('Dark theme')
             set_theme(self.color, self.email)
 
     def go_to_olimpiads(self):
         global ex
-        ex4 = OlimpiadsWind(self.email, self.color)
+        ex4 = OlimpiadsWind(self.email)
         ex4.show()
         ex.close()
         ex = ex4
@@ -1432,10 +1439,12 @@ class SingInWind(QMainWindow):
         super().__init__()
         f = io.StringIO(template_sign_in)
         uic.loadUi(f, self)
-        self.setStyleSheet("background-color: white")
         self.showMaximized()
-        self.setWindowTitle("Sign in")
-        self.password.setEchoMode(QLineEdit.Password)
+        qdarktheme.setup_theme()
+        main_win = QMainWindow()
+        push_button = QPushButton("PyQtDarkTheme!!")
+        main_win.setCentralWidget(push_button)
+        self.password.setEchoMode(QLineEdit.EchoMode.Password)
         self.sign_in.clicked.connect(self.go_to_main)
         self.sign_up.clicked.connect(self.go_to_sign_up)
 
@@ -1471,8 +1480,11 @@ class SignUpWind(QMainWindow):
         super().__init__()
         f = io.StringIO(template_sign_up)
         uic.loadUi(f, self)
-        self.setStyleSheet("background-color: white")
         self.showMaximized()
+        qdarktheme.setup_theme()
+        main_win = QMainWindow()
+        push_button = QPushButton("PyQtDarkTheme!!")
+        main_win.setCentralWidget(push_button)
         self.setWindowTitle("Sign up")
         self.Sign_in.clicked.connect(self.go_to_sign_in)
         self.Create.clicked.connect(self.create_btn)
@@ -1500,15 +1512,13 @@ class SignUpWind(QMainWindow):
 
 
 class OlimpiadsWind(QMainWindow):
-    def __init__(self, email, color="background-color: white"):
+    def __init__(self, email):
         super().__init__()
         f = io.StringIO(template_olimpiads)
         uic.loadUi(f, self)
-        self.showMaximized()
+        self.showFullScreen()
         self.setWindowTitle("List")
-        self.color = color
         self.email = email
-        self.setStyleSheet(self.color)
         self.back.clicked.connect(self.go_to_main)
         self.vishaya.clicked.connect(self.olimp_page)
         self.mosh.clicked.connect(self.olimp_page)
@@ -1534,7 +1544,7 @@ class OlimpiadsWind(QMainWindow):
 
     def olimp_page(self):
         global ex
-        ex2 = PageWind(self.sender().text(), self.email, self.color)
+        ex2 = PageWind(self.sender().text(), self.email)
         ex2.show()
         ex.close()
         ex = ex2
@@ -1555,18 +1565,16 @@ class OlimpiadsWind(QMainWindow):
 
 
 class PageWind(QMainWindow):
-    def __init__(self, btn_text, email, color="background-color: white"):
+    def __init__(self, btn_text, email):
         super().__init__()
         f = io.StringIO(template_page)
         uic.loadUi(f, self)
-        self.color = color
         self.email = email
-        self.showMaximized()
+        self.showFullScreen()
         self.setWindowTitle("Page")
-        self.setStyleSheet(self.color)
         self.olimp = btn_text
         self.label.setText(f'<a href="{get_url(btn_text)}">Ссылка:</a>')
-        self.label.setTextInteractionFlags(Qt.TextBrowserInteraction)
+        #self.label.setTextInteractionFlags(Qt.TextBrowserInteraction)
         self.label.setOpenExternalLinks(True)
         self.label.linkActivated.connect(handle_link_activation)
         self.name.setText(btn_text)
@@ -1586,7 +1594,7 @@ class PageWind(QMainWindow):
 
     def olimpiads(self):
         global ex
-        ex2 = OlimpiadsWind(self.email, self.color)
+        ex2 = OlimpiadsWind(self.email)
         ex2.show()
         ex.close()
         ex = ex2

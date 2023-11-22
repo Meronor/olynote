@@ -1,17 +1,17 @@
 import sqlite3
-from PyQt5.QtCore import QUrl
-from PyQt5.QtGui import QDesktopServices
+from PyQt6.QtCore import QUrl
+from PyQt6.QtGui import QDesktopServices
+from PyQt6.QtWidgets import QStyleFactory
 
 
-class WhiteTheme:
-
-    def __init__(self, color):
-        self.color = color
-    def backgr(self):
-        return "background-color: white"
-
-    def lineedit(self):
-        return "QLineEdit { background-color: yellow }"
+def theme(wind, color):
+    if color == 'light':
+        print(1)
+        wind.setStyle(QStyleFactory.create("Fusion"))
+    else:
+        print(2)
+        wind.setStyleSheet("background-color: #2b2b2b")
+        wind.setStyleSheet("QPushButton { background-color: #dbdbdb }")
 
 
 def add_user(email, password):
