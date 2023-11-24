@@ -3,7 +3,7 @@ import sqlite3
 from PyQt6 import uic
 import qdarktheme
 from PyQt6.QtWidgets import QMainWindow, QDialog, QLineEdit, QPushButton
-from base import get_url, get_note, get_theme, set_theme, set_note, add_user, handle_link_activation
+from base import get_url, get_note, get_olys, get_theme, set_theme, set_note, add_user, handle_link_activation
 
 template_calendar = '''<?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
@@ -1618,21 +1618,70 @@ template_addevent = '''<?xml version="1.0" encoding="UTF-8"?>
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>400</width>
-    <height>300</height>
+    <width>359</width>
+    <height>185</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Dialog</string>
   </property>
-  <widget class="QLineEdit" name="lineEdit">
+  <widget class="QComboBox" name="olybox">
    <property name="geometry">
     <rect>
-     <x>150</x>
-     <y>110</y>
-     <width>113</width>
-     <height>20</height>
+     <x>130</x>
+     <y>40</y>
+     <width>181</width>
+     <height>22</height>
     </rect>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_oly">
+   <property name="geometry">
+    <rect>
+     <x>40</x>
+     <y>40</y>
+     <width>81</width>
+     <height>16</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Олимпиада</string>
+   </property>
+  </widget>
+  <widget class="QTimeEdit" name="time">
+   <property name="geometry">
+    <rect>
+     <x>130</x>
+     <y>70</y>
+     <width>118</width>
+     <height>22</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_time">
+   <property name="geometry">
+    <rect>
+     <x>40</x>
+     <y>70</y>
+     <width>47</width>
+     <height>13</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Время</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="save">
+   <property name="geometry">
+    <rect>
+     <x>260</x>
+     <y>140</y>
+     <width>75</width>
+     <height>23</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Save</string>
    </property>
   </widget>
  </widget>
@@ -1885,13 +1934,6 @@ class CalendarWind(QMainWindow):
 
         self.email = email
 
-        button = QPushButton()
-        button.setText('olimp')
-        button.setFixedWidth(self.addevent.width() * 2 + (self.events.width() - button.width()))
-        button.setStyleSheet(f"margin-left: {(self.events.width() - button.width())}")
-        self.events.setFixedHeight(200)
-        self.verticalLayout.addWidget(button)
-
         self.back.clicked.connect(self.go_to_main)
         self.addevent.clicked.connect(self.addevent_wind)
 
@@ -1912,5 +1954,18 @@ class AddeventWind(QDialog):
         super().__init__()
         f = io.StringIO(template_addevent)
         uic.loadUi(f, self)
-
         self.setWindowTitle("Add event")
+
+        self.olybox.addItems(get_olys())
+        self.save.clicked.connect(self.save_btn)
+
+    def save_btn(self):
+        print(self.time.time())
+        button = QPushButton()
+        button.setText(self.olybox.currentText())
+        button.setFixedWidth(ex.addevent.width() * 2 + (ex.events.width() - button.width()))
+        button.setStyleSheet(f"margin-left: {(ex.events.width() - button.width())}")
+        ex.events.setFixedHeight(200)
+        ex.verticalLayout.addWidget(button)
+        self.close()
+

@@ -49,6 +49,17 @@ def get_url(olimp):
         return False
 
 
+def get_olys():
+    try:
+        with sqlite3.connect("datausers") as con:
+            cur = con.cursor()
+            return list(map(lambda x: x[0], cur.execute(f"SELECT olimp FROM notes").fetchall()))
+    except Exception as s:
+        print(s)
+        print('get_url')
+        return False
+
+
 def get_note(olimp, email):
     try:
         with sqlite3.connect("datausers") as con:
