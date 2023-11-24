@@ -56,7 +56,7 @@ def get_olys():
             return list(map(lambda x: x[0], cur.execute(f"SELECT olimp FROM notes").fetchall()))
     except Exception as s:
         print(s)
-        print('get_url')
+        print('get_olys')
         return False
 
 
@@ -82,6 +82,20 @@ def get_theme(email):
         return False
 
 
+def get_event(email, date):
+    try:
+        with sqlite3.connect("datausers") as con:
+            cur = con.cursor()
+            print(list(map(lambda x: x[0], cur.execute(
+                f"SELECT name FROM dates WHERE user='{email}' AND date = '{date}' ORDER BY time").fetchall())))
+            return list(map(lambda x: x[0], cur.execute(
+                f"SELECT name FROM dates WHERE user='{email}' AND date = '{date}' ORDER BY time").fetchall()))
+    except Exception as s:
+        print(s)
+        print('get_theme')
+        return False
+
+
 def set_theme(theme, email):
     with sqlite3.connect("datausers") as con:
         cur = con.cursor()
@@ -101,6 +115,17 @@ def set_note(olimp, note, email):
         except Exception as s:
             print(s)
             print('set_note')
+        return False
+
+
+def set_date(user, date, name, time):
+    with sqlite3.connect("datausers") as con:
+        cur = con.cursor()
+        try:
+            cur.execute(f"INSERT INTO dates (user, date, name, time) VALUES ('{user}', '{date}', '{name}', '{time}')")
+        except Exception as s:
+            print(s)
+            print('set_date')
         return False
 
 

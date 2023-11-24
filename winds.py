@@ -1,9 +1,10 @@
 import io
 import sqlite3
-from PyQt6 import uic
+from PyQt6 import uic, QtWidgets
 import qdarktheme
 from PyQt6.QtWidgets import QMainWindow, QDialog, QLineEdit, QPushButton
-from base import get_url, get_note, get_olys, get_theme, set_theme, set_note, add_user, handle_link_activation
+from base import get_url, get_note, get_olys, get_theme, get_event, set_theme, set_note, set_date, add_user, \
+    handle_link_activation
 
 template_calendar = '''<?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
@@ -1937,6 +1938,15 @@ class CalendarWind(QMainWindow):
         self.back.clicked.connect(self.go_to_main)
         self.addevent.clicked.connect(self.addevent_wind)
 
+        for i in get_event(self.email, f"{self.calendar.selectedDate().day()}.{self.calendar.selectedDate().month()}."
+                                       f"{self.calendar.selectedDate().year()}"):
+            button = QPushButton()
+            button.setText(i)
+            button.setFixedWidth(self.addevent.width() * 2 + (self.events.width() - button.width()))
+            button.setStyleSheet(f"margin-left: {(self.events.width() - button.width())}")
+            self.events.setFixedHeight(200)
+            self.verticalLayout.addWidget(button)
+
     def go_to_main(self):
         global ex
         ex2 = MainWind(self.email)
@@ -1945,27 +1955,33 @@ class CalendarWind(QMainWindow):
         ex = ex2
 
     def addevent_wind(self):
-        dlg = AddeventWind()
+        dlg = AddeventWind(self.email)
         dlg.exec()
 
 
 class AddeventWind(QDialog):
-    def __init__(self):
+    def __init__(self, email):
         super().__init__()
         f = io.StringIO(template_addevent)
         uic.loadUi(f, self)
         self.setWindowTitle("Add event")
 
+        self.email = email
         self.olybox.addItems(get_olys())
         self.save.clicked.connect(self.save_btn)
 
     def save_btn(self):
-        print(self.time.time())
-        button = QPushButton()
-        button.setText(self.olybox.currentText())
-        button.setFixedWidth(ex.addevent.width() * 2 + (ex.events.width() - button.width()))
-        button.setStyleSheet(f"margin-left: {(ex.events.width() - button.width())}")
-        ex.events.setFixedHeight(200)
-        ex.verticalLayout.addWidget(button)
+        for i in reversed(range(1, ex.verticalLayout.count())):
+            ex.verticalLayout.itemAt(i).widget().setParent(None)
+        set_date(self.email, f"{ex.calendar.selectedDate().day()}.{ex.calendar.selectedDate().month()}."
+                             f"{ex.calendar.selectedDate().year()}", self.olybox.currentText(),
+                 f"{self.time.time().hour()}.{self.time.time().minute()}")
+        for i in get_event(self.email, f"{ex.calendar.selectedDate().day()}.{ex.calendar.selectedDate().month()}."
+                                       f"{ex.calendar.selectedDate().year()}"):
+            button = QPushButton()
+            button.setText(i)
+            button.setFixedWidth(ex.addevent.width() * 2 + (ex.events.width() - button.width()))
+            button.setStyleSheet(f"margin-left: {(ex.events.width() - button.width())}")
+            ex.events.setFixedHeight(200)
+            ex.verticalLayout.addWidget(button)
         self.close()
-
