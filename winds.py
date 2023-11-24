@@ -2,7 +2,7 @@ import io
 import sqlite3
 from PyQt6 import uic
 import qdarktheme
-from PyQt6.QtWidgets import QMainWindow, QLineEdit, QPushButton
+from PyQt6.QtWidgets import QMainWindow, QDialog, QLineEdit, QPushButton
 from base import get_url, get_note, get_theme, set_theme, set_note, add_user, handle_link_activation
 
 template_calendar = '''<?xml version="1.0" encoding="UTF-8"?>
@@ -13,7 +13,7 @@ template_calendar = '''<?xml version="1.0" encoding="UTF-8"?>
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1107</width>
+    <width>976</width>
     <height>868</height>
    </rect>
   </property>
@@ -21,59 +21,61 @@ template_calendar = '''<?xml version="1.0" encoding="UTF-8"?>
    <string>MainWindow</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <layout class="QVBoxLayout" name="verticalLayout_2">
+   <layout class="QHBoxLayout" name="horizontalLayout_3">
     <item>
-     <layout class="QHBoxLayout" name="horizontalLayout_2">
+     <widget class="QCalendarWidget" name="calendar">
+      <property name="minimumSize">
+       <size>
+        <width>700</width>
+        <height>0</height>
+       </size>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <layout class="QVBoxLayout" name="verticalLayout_2">
       <item>
-       <widget class="QCalendarWidget" name="calendarWidget">
+       <spacer name="verticalSpacer_2">
+        <property name="orientation">
+         <enum>Qt::Vertical</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>20</width>
+          <height>40</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+      <item>
+       <widget class="QLabel" name="label_2">
         <property name="minimumSize">
          <size>
-          <width>700</width>
+          <width>250</width>
           <height>0</height>
          </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>1000</width>
+          <height>10</height>
+         </size>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
         </property>
        </widget>
       </item>
       <item>
        <layout class="QVBoxLayout" name="verticalLayout">
+        <property name="sizeConstraint">
+         <enum>QLayout::SetMinimumSize</enum>
+        </property>
         <item>
-         <layout class="QHBoxLayout" name="horizontalLayout">
-          <item>
-           <widget class="QPushButton" name="pushButton_3">
-            <property name="minimumSize">
-             <size>
-              <width>0</width>
-              <height>50</height>
-             </size>
-            </property>
-            <property name="text">
-             <string>Olimpiads</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QPushButton" name="log_inBtn">
-            <property name="minimumSize">
-             <size>
-              <width>50</width>
-              <height>50</height>
-             </size>
-            </property>
-            <property name="maximumSize">
-             <size>
-              <width>100</width>
-              <height>16777215</height>
-             </size>
-            </property>
-            <property name="text">
-             <string>Log in</string>
-            </property>
-           </widget>
-          </item>
-         </layout>
-        </item>
-        <item>
-         <widget class="QLabel" name="label">
+         <widget class="QLabel" name="events">
           <property name="enabled">
            <bool>true</bool>
           </property>
@@ -97,7 +99,7 @@ template_calendar = '''<?xml version="1.0" encoding="UTF-8"?>
            <bool>false</bool>
           </property>
           <property name="text">
-           <string>Note:</string>
+           <string>Events</string>
           </property>
           <property name="textFormat">
            <enum>Qt::AutoText</enum>
@@ -113,19 +115,102 @@ template_calendar = '''<?xml version="1.0" encoding="UTF-8"?>
           </property>
          </widget>
         </item>
+       </layout>
+      </item>
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_2">
         <item>
-         <widget class="QTextEdit" name="textEdit"/>
+         <spacer name="horizontalSpacer_3">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
         </item>
         <item>
-         <widget class="QPushButton" name="pushButton_2">
+         <layout class="QVBoxLayout" name="verticalLayout_3">
+          <item>
+           <widget class="QPushButton" name="addevent">
+            <property name="minimumSize">
+             <size>
+              <width>200</width>
+              <height>0</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>16777215</width>
+              <height>16777215</height>
+             </size>
+            </property>
+            <property name="layoutDirection">
+             <enum>Qt::LeftToRight</enum>
+            </property>
+            <property name="text">
+             <string>Add event</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+        <item>
+         <spacer name="horizontalSpacer_2">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <spacer name="verticalSpacer">
+        <property name="orientation">
+         <enum>Qt::Vertical</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>20</width>
+          <height>40</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout">
+        <item>
+         <spacer name="horizontalSpacer">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item>
+         <widget class="QPushButton" name="back">
           <property name="minimumSize">
            <size>
-            <width>0</width>
-            <height>40</height>
+            <width>100</width>
+            <height>0</height>
            </size>
           </property>
           <property name="text">
-           <string>Save</string>
+           <string>back</string>
           </property>
          </widget>
         </item>
@@ -140,7 +225,7 @@ template_calendar = '''<?xml version="1.0" encoding="UTF-8"?>
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1107</width>
+     <width>976</width>
      <height>21</height>
     </rect>
    </property>
@@ -150,7 +235,6 @@ template_calendar = '''<?xml version="1.0" encoding="UTF-8"?>
  <resources/>
  <connections/>
 </ui>
-
 '''
 template_main = '''<?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
@@ -1380,58 +1464,184 @@ template_page = '''<?xml version="1.0" encoding="UTF-8"?>
  <connections/>
 </ui>
 '''
+template_calenda = '''<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1107</width>
+    <height>868</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>MainWindow</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <layout class="QVBoxLayout" name="verticalLayout_2">
+    <item>
+     <layout class="QHBoxLayout" name="horizontalLayout_2">
+      <item>
+       <widget class="QCalendarWidget" name="calendarWidget">
+        <property name="minimumSize">
+         <size>
+          <width>700</width>
+          <height>0</height>
+         </size>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <layout class="QVBoxLayout" name="verticalLayout">
+        <item>
+         <layout class="QHBoxLayout" name="horizontalLayout">
+          <item>
+           <widget class="QPushButton" name="pushButton_3">
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>50</height>
+             </size>
+            </property>
+            <property name="text">
+             <string>Olimpiads</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="log_inBtn">
+            <property name="minimumSize">
+             <size>
+              <width>50</width>
+              <height>50</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>100</width>
+              <height>16777215</height>
+             </size>
+            </property>
+            <property name="text">
+             <string>Log in</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+        <item>
+         <widget class="QLabel" name="label">
+          <property name="enabled">
+           <bool>true</bool>
+          </property>
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="font">
+           <font>
+            <pointsize>18</pointsize>
+            <weight>50</weight>
+            <bold>false</bold>
+           </font>
+          </property>
+          <property name="tabletTracking">
+           <bool>false</bool>
+          </property>
+          <property name="acceptDrops">
+           <bool>false</bool>
+          </property>
+          <property name="text">
+           <string>Note:</string>
+          </property>
+          <property name="textFormat">
+           <enum>Qt::AutoText</enum>
+          </property>
+          <property name="scaledContents">
+           <bool>false</bool>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignCenter</set>
+          </property>
+          <property name="wordWrap">
+           <bool>false</bool>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QTextEdit" name="textEdit"/>
+        </item>
+        <item>
+         <widget class="QPushButton" name="pushButton_2">
+          <property name="minimumSize">
+           <size>
+            <width>0</width>
+            <height>40</height>
+           </size>
+          </property>
+          <property name="text">
+           <string>Save</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+     </layout>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>1107</width>
+     <height>21</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QStatusBar" name="statusbar"/>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
+'''
+template_addevent = '''<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Dialog</class>
+ <widget class="QDialog" name="Dialog">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>400</width>
+    <height>300</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Dialog</string>
+  </property>
+  <widget class="QLineEdit" name="lineEdit">
+   <property name="geometry">
+    <rect>
+     <x>150</x>
+     <y>110</y>
+     <width>113</width>
+     <height>20</height>
+    </rect>
+   </property>
+  </widget>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
+'''
 
 ex = ''
-
-
-class MainWind(QMainWindow):
-    def __init__(self, email):
-        super().__init__()
-        f = io.StringIO(template_main)
-        uic.loadUi(f, self)
-        self.email = email
-        self.showFullScreen()
-        self.olimpiad.clicked.connect(self.go_to_olimpiads)
-        self.log_out.clicked.connect(self.go_to_sign_in)
-        self.dark_theme.clicked.connect(self.theme)
-        if get_theme(email) == 'light':
-            qdarktheme.setup_theme("light")
-            self.dark_theme.setText('Dark theme')
-        else:
-            qdarktheme.setup_theme()
-            main_win = QMainWindow()
-            push_button = QPushButton("PyQtDarkTheme!!")
-            main_win.setCentralWidget(push_button)
-            self.dark_theme.setText('Light theme')
-
-    def theme(self):
-        if self.sender().text() == 'Dark theme':
-            self.color = "Dark"
-            qdarktheme.setup_theme()
-            main_win = QMainWindow()
-            push_button = QPushButton("PyQtDarkTheme!!")
-            main_win.setCentralWidget(push_button)
-            self.dark_theme.setText('Light theme')
-            set_theme(self.color, self.email)
-        elif self.sender().text() == 'Light theme':
-            self.color = "light"
-            qdarktheme.setup_theme("light")
-            self.dark_theme.setText('Dark theme')
-            set_theme(self.color, self.email)
-
-    def go_to_olimpiads(self):
-        global ex
-        ex4 = OlimpiadsWind(self.email)
-        ex4.show()
-        ex.close()
-        ex = ex4
-
-    def go_to_sign_in(self):
-        global ex
-        ex4 = SingInWind()
-        ex4.show()
-        ex.close()
-        ex = ex4
 
 
 class SingInWind(QMainWindow):
@@ -1486,6 +1696,7 @@ class SignUpWind(QMainWindow):
         push_button = QPushButton("PyQtDarkTheme!!")
         main_win.setCentralWidget(push_button)
         self.setWindowTitle("Sign up")
+
         self.Sign_in.clicked.connect(self.go_to_sign_in)
         self.Create.clicked.connect(self.create_btn)
 
@@ -1511,6 +1722,67 @@ class SignUpWind(QMainWindow):
         ex = ex4
 
 
+class MainWind(QMainWindow):
+    def __init__(self, email):
+        super().__init__()
+        f = io.StringIO(template_main)
+        uic.loadUi(f, self)
+        self.showFullScreen()
+
+        self.email = email
+
+        self.olimpiad.clicked.connect(self.go_to_olimpiads)
+        self.log_out.clicked.connect(self.go_to_sign_in)
+        self.dark_theme.clicked.connect(self.theme)
+        self.calendar.clicked.connect(self.go_to_calendar)
+
+        if get_theme(email) == 'light':
+            qdarktheme.setup_theme("light")
+            self.dark_theme.setText('Dark theme')
+        else:
+            qdarktheme.setup_theme()
+            main_win = QMainWindow()
+            push_button = QPushButton("PyQtDarkTheme!!")
+            main_win.setCentralWidget(push_button)
+            self.dark_theme.setText('Light theme')
+
+    def theme(self):
+        if self.sender().text() == 'Dark theme':
+            self.color = "Dark"
+            qdarktheme.setup_theme()
+            main_win = QMainWindow()
+            push_button = QPushButton("PyQtDarkTheme!!")
+            main_win.setCentralWidget(push_button)
+            self.dark_theme.setText('Light theme')
+            set_theme(self.color, self.email)
+        elif self.sender().text() == 'Light theme':
+            self.color = "light"
+            qdarktheme.setup_theme("light")
+            self.dark_theme.setText('Dark theme')
+            set_theme(self.color, self.email)
+
+    def go_to_olimpiads(self):
+        global ex
+        ex4 = OlimpiadsWind(self.email)
+        ex4.show()
+        ex.close()
+        ex = ex4
+
+    def go_to_sign_in(self):
+        global ex
+        ex4 = SingInWind()
+        ex4.show()
+        ex.close()
+        ex = ex4
+
+    def go_to_calendar(self):
+        global ex
+        ex4 = CalendarWind(self.email)
+        ex4.show()
+        ex.close()
+        ex = ex4
+
+
 class OlimpiadsWind(QMainWindow):
     def __init__(self, email):
         super().__init__()
@@ -1518,7 +1790,9 @@ class OlimpiadsWind(QMainWindow):
         uic.loadUi(f, self)
         self.showFullScreen()
         self.setWindowTitle("List")
+
         self.email = email
+
         self.back.clicked.connect(self.go_to_main)
         self.vishaya.clicked.connect(self.olimp_page)
         self.mosh.clicked.connect(self.olimp_page)
@@ -1569,16 +1843,18 @@ class PageWind(QMainWindow):
         super().__init__()
         f = io.StringIO(template_page)
         uic.loadUi(f, self)
-        self.email = email
         self.showFullScreen()
         self.setWindowTitle("Page")
+
+        self.email = email
         self.olimp = btn_text
+
         self.label.setText(f'<a href="{get_url(btn_text)}">Ссылка:</a>')
-        #self.label.setTextInteractionFlags(Qt.TextBrowserInteraction)
+        # self.label.setTextInteractionFlags(Qt.TextBrowserInteraction)
         self.label.setOpenExternalLinks(True)
         self.label.linkActivated.connect(handle_link_activation)
         self.name.setText(btn_text)
-        self.back.clicked.connect(self.olimpiads)
+        self.back.clicked.connect(self.go_to_olimpiads)
         self.btn.clicked.connect(self.edit)
         self.about.setText(get_note(btn_text, self.email))
         self.label_3.setText('Some info: inf0')
@@ -1592,9 +1868,49 @@ class PageWind(QMainWindow):
             self.about.setReadOnly(True)
             self.btn.setText('Edit')
 
-    def olimpiads(self):
+    def go_to_olimpiads(self):
         global ex
         ex2 = OlimpiadsWind(self.email)
         ex2.show()
         ex.close()
         ex = ex2
+
+
+class CalendarWind(QMainWindow):
+    def __init__(self, email):
+        super().__init__()
+        f = io.StringIO(template_calendar)
+        uic.loadUi(f, self)
+        self.showFullScreen()
+
+        self.email = email
+
+        button = QPushButton()
+        button.setText('olimp')
+        button.setFixedWidth(self.addevent.width() * 2 + (self.events.width() - button.width()))
+        button.setStyleSheet(f"margin-left: {(self.events.width() - button.width())}")
+        self.events.setFixedHeight(200)
+        self.verticalLayout.addWidget(button)
+
+        self.back.clicked.connect(self.go_to_main)
+        self.addevent.clicked.connect(self.addevent_wind)
+
+    def go_to_main(self):
+        global ex
+        ex2 = MainWind(self.email)
+        ex2.show()
+        ex.close()
+        ex = ex2
+
+    def addevent_wind(self):
+        dlg = AddeventWind()
+        dlg.exec()
+
+
+class AddeventWind(QDialog):
+    def __init__(self):
+        super().__init__()
+        f = io.StringIO(template_addevent)
+        uic.loadUi(f, self)
+
+        self.setWindowTitle("Add event")
