@@ -1,4 +1,5 @@
 import sqlite3
+import datetime
 from PyQt6.QtCore import QUrl
 from PyQt6.QtGui import QDesktopServices
 from PyQt6.QtWidgets import QStyleFactory
@@ -78,7 +79,7 @@ def get_theme(email):
             return cur.execute(f"SELECT theme FROM notes1 WHERE id='{email}'").fetchall()[0][0]
     except Exception as s:
         print(s)
-        print('get_theme')
+        print('email')
         return False
 
 
@@ -86,13 +87,14 @@ def get_event(email, date):
     try:
         with sqlite3.connect("datausers") as con:
             cur = con.cursor()
-            print(list(map(lambda x: x[0], cur.execute(
-                f"SELECT name FROM dates WHERE user='{email}' AND date = '{date}' ORDER BY time").fetchall())))
-            return list(map(lambda x: x[0], cur.execute(
-                f"SELECT name FROM dates WHERE user='{email}' AND date = '{date}' ORDER BY time").fetchall()))
+            ret = []
+            for name, time in cur.execute(
+                    f"SELECT name, time FROM dates WHERE user='{email}' AND date = '{date}' ORDER BY time").fetchall():
+                ret.append((name, datetime.time(time // 60, time % 60).strftime('%H:%M')))
+            return ret
     except Exception as s:
         print(s)
-        print('get_theme')
+        print('get_event')
         return False
 
 
@@ -103,7 +105,7 @@ def set_theme(theme, email):
             cur.execute(f'UPDATE notes1 SET theme = "{theme}" WHERE id = "{email}"')
         except Exception as s:
             print(s)
-            print('set_note')
+            print('set_theme')
         return False
 
 
@@ -122,7 +124,8 @@ def set_date(user, date, name, time):
     with sqlite3.connect("datausers") as con:
         cur = con.cursor()
         try:
-            cur.execute(f"INSERT INTO dates (user, date, name, time) VALUES ('{user}', '{date}', '{name}', '{time}')")
+            time = int(time.split('.')[0]) * 60 + int(time.split('.')[1])
+            cur.execute(f"INSERT INTO dates (user, date, name, time) VALUES ('{user}', '{date}', '{name}', {time})")
         except Exception as s:
             print(s)
             print('set_date')
