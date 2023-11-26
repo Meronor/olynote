@@ -5,6 +5,16 @@ from PyQt6.QtGui import QDesktopServices
 from PyQt6.QtWidgets import QStyleFactory
 
 
+def get_dates():
+    try:
+        with sqlite3.connect("datausers") as con:
+            cur = con.cursor()
+            return list(map(lambda x: x[0], cur.execute(f"SELECT date FROM dates").fetchall()))
+    except Exception as s:
+        print(s)
+        print('get_dates')
+        return False
+
 def theme(wind, color):
     if color == 'light':
         print(1)
@@ -98,11 +108,11 @@ def get_event(email, date):
         return False
 
 
-def set_theme(theme, email):
+def set_theme(color, email):
     with sqlite3.connect("datausers") as con:
         cur = con.cursor()
         try:
-            cur.execute(f'UPDATE notes1 SET theme = "{theme}" WHERE id = "{email}"')
+            cur.execute(f'UPDATE notes1 SET theme = "{color}" WHERE id = "{email}"')
         except Exception as s:
             print(s)
             print('set_theme')

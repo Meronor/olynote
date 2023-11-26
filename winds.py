@@ -1,10 +1,10 @@
 import io
 import sqlite3
-import datetime
-from PyQt6 import uic, QtWidgets
+from PyQt6 import uic
 import qdarktheme
+from calendar import Ui_MainWindow
 from PyQt6.QtWidgets import QMainWindow, QDialog, QLineEdit, QPushButton
-from base import get_url, get_note, get_olys, get_theme, get_event, set_theme, set_note, set_date, add_user, \
+from base import get_url, get_note, get_olys, get_theme, get_event, set_theme, set_note, set_date, add_user,\
     handle_link_activation
 
 template_calendar = '''<?xml version="1.0" encoding="UTF-8"?>
@@ -1940,22 +1940,18 @@ class PageWind(QMainWindow):
         ex = ex2
 
 
-class CalendarWind(QMainWindow):
+class CalendarWind(QMainWindow, Ui_MainWindow):
     def __init__(self, email):
         super().__init__()
-        f = io.StringIO(template_calendar)
-        uic.loadUi(f, self)
+        self.setupUi(self)
         self.showFullScreen()
-
         self.email = email
 
         self.back.clicked.connect(self.go_to_main)
         self.addevent.clicked.connect(self.addevent_wind)
         self.calendar.clicked.connect(self.qwerty)
 
-        for name, time in get_event(self.email,
-                                    f"{self.calendar.selectedDate().day()}.{self.calendar.selectedDate().month()}."
-                                    f"{self.calendar.selectedDate().year()}"):
+        for name, time in get_event(self.email, f"{self.calendar.selectedDate()}"):
             button = QPushButton()
             button.setText(name + ' ' + f"{time}")
             button.setFixedWidth(self.addevent.width() * 2 + (self.events.width() - button.width()))
@@ -1966,9 +1962,7 @@ class CalendarWind(QMainWindow):
     def qwerty(self):
         for i in reversed(range(1, ex.verticalLayout.count())):
             self.verticalLayout.itemAt(i).widget().setParent(None)
-        for name, time in get_event(self.email,
-                                    f"{self.calendar.selectedDate().day()}.{self.calendar.selectedDate().month()}."
-                                    f"{self.calendar.selectedDate().year()}"):
+        for name, time in get_event(self.email, f"{self.calendar.selectedDate()}"):
             button = QPushButton()
             button.setText(name + ' ' + f"{time}")
             button.setFixedWidth(self.addevent.width() * 2 + (self.events.width() - button.width()))
@@ -2002,12 +1996,9 @@ class AddeventWind(QDialog):
     def save_btn(self):
         for i in reversed(range(1, ex.verticalLayout.count())):
             ex.verticalLayout.itemAt(i).widget().setParent(None)
-        set_date(self.email, f"{ex.calendar.selectedDate().day()}.{ex.calendar.selectedDate().month()}."
-                             f"{ex.calendar.selectedDate().year()}", self.olybox.currentText(),
+        set_date(self.email, f"{ex.calendar.selectedDate()}", self.olybox.currentText(),
                  f"{self.time.time().hour()}.{self.time.time().minute()}")
-        for name, time in get_event(self.email,
-                                    f"{ex.calendar.selectedDate().day()}.{ex.calendar.selectedDate().month()}."
-                                    f"{ex.calendar.selectedDate().year()}"):
+        for name, time in get_event(self.email, f"{ex.calendar.selectedDate()}"):
             button = QPushButton()
             button.setText(name + ' ' + f"{time}")
             button.setFixedWidth(ex.addevent.width() * 2 + (ex.events.width() - button.width()))
