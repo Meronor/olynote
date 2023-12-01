@@ -15,6 +15,7 @@ def get_dates():
         print('get_dates')
         return False
 
+
 def theme(wind, color):
     if color == 'light':
         print(1)

@@ -3,7 +3,7 @@ import sqlite3
 from PyQt6 import uic
 import qdarktheme
 from calendar import Ui_MainWindow
-from PyQt6.QtWidgets import QMainWindow, QDialog, QLineEdit, QPushButton
+from PyQt6.QtWidgets import QMainWindow, QDialog, QLineEdit, QPushButton, QHBoxLayout
 from base import get_url, get_note, get_olys, get_theme, get_event, set_theme, set_note, set_date, add_user,\
     handle_link_activation
 
@@ -1952,23 +1952,40 @@ class CalendarWind(QMainWindow, Ui_MainWindow):
         self.calendar.clicked.connect(self.qwerty)
 
         for name, time in get_event(self.email, f"{self.calendar.selectedDate()}"):
+            print(5)
             button = QPushButton()
+            button1 = QPushButton()
+            button1.setFixedWidth(30)
+            button1.setStyleSheet(f"margin-left: 0")
             button.setText(name + ' ' + f"{time}")
             button.setFixedWidth(self.addevent.width() * 2 + (self.events.width() - button.width()))
             button.setStyleSheet(f"margin-left: {(self.events.width() - button.width())}")
             self.events.setFixedHeight(200)
-            self.verticalLayout.addWidget(button)
+            lay = QHBoxLayout()
+            lay.addWidget(button)
+            lay.addWidget(button1)
+            self.verticalLayout.addLayout(lay)
+            print(6)
 
     def qwerty(self):
         for i in reversed(range(1, ex.verticalLayout.count())):
             self.verticalLayout.itemAt(i).widget().setParent(None)
         for name, time in get_event(self.email, f"{self.calendar.selectedDate()}"):
+            print(3)
+            button1 = QPushButton()
+            button1.setFixedWidth(30)
+            button1.setStyleSheet(f"margin-left: 0")
             button = QPushButton()
             button.setText(name + ' ' + f"{time}")
             button.setFixedWidth(self.addevent.width() * 2 + (self.events.width() - button.width()))
             button.setStyleSheet(f"margin-left: {(self.events.width() - button.width())}")
+
             self.events.setFixedHeight(200)
-            self.verticalLayout.addWidget(button)
+            lay = QHBoxLayout()
+            lay.addWidget(button)
+            lay.addWidget(button1)
+            self.verticalLayout.addLayout(lay)
+            print(4)
 
     def go_to_main(self):
         global ex
@@ -1999,10 +2016,19 @@ class AddeventWind(QDialog):
         set_date(self.email, f"{ex.calendar.selectedDate()}", self.olybox.currentText(),
                  f"{self.time.time().hour()}.{self.time.time().minute()}")
         for name, time in get_event(self.email, f"{ex.calendar.selectedDate()}"):
+            print(1)
+            button1 = QPushButton()
+            button1.setFixedWidth(30)
+            button1.setStyleSheet(f"margin-left: 0")
             button = QPushButton()
             button.setText(name + ' ' + f"{time}")
-            button.setFixedWidth(ex.addevent.width() * 2 + (ex.events.width() - button.width()))
+            button.setFixedWidth(ex.addevent.width() * 2 + (ex.events.width() - button.width())())
             button.setStyleSheet(f"margin-left: {(ex.events.width() - button.width())}")
+
             ex.events.setFixedHeight(200)
-            ex.verticalLayout.addWidget(button)
+            lay = QHBoxLayout()
+            lay.addWidget(button)
+            lay.addWidget(button1)
+            ex.verticalLayout.addLayout(lay)
+            print(2)
         self.close()
